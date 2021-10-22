@@ -7,19 +7,17 @@
       - virtualenv
       update_cache: yes
     become: yes
+  - name: Git Clone
+    ansible.builtin.git:
+      repo: https://github.com/guilhermeonrails/clientes-leo-api.git
+      dest: /home/ubuntu/tcc
+      version: master
   - name: Instalando dependencias com pip (Django e Django Rest)
     pip:
       virtualenv: /home/ubuntu/tcc/venv
       name:
         - django
         - djangorestframework
-  - name: Verificando se o projeto ja existe
-    stat:
-      path: /home/ubuntu/tcc/setup/settings.py
-    register: projeto
-  - name: Iniciando o projeto
-    shell: '. /home/ubuntu/tcc/venv/bin/activate; django-admin startproject setup /home/ubuntu/tcc/'
-    when: not projeto.stat.exists
   - name: Alterando o hosts do settings
     lineinfile:
       path: /home/ubuntu/tcc/setup/settings.py
